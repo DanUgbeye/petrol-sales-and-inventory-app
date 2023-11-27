@@ -1,19 +1,24 @@
 import type _mongoose from "mongoose";
 import type { Model } from "mongoose";
-import { User, UserDocument, UserRole } from "./user.types";
-import { USER_ROLES } from "./user.types";
+import { UserDocument } from "./user.types";
 import {
   BadRequestException,
   NotFoundException,
   ServerException,
 } from "@/server/exceptions";
 import { PasswordUtil } from "@/server/utils/password";
+import {
+  USER_ROLES,
+  User,
+  UserLoginData,
+  UserRole,
+} from "@/global-types/user.types";
 
 export default class UserRepository {
-  public repo: Model<UserDocument>;
+  public collection: Model<UserDocument>;
 
   constructor(conn: typeof _mongoose) {
-    this.repo = conn.models.User as Model<UserDocument>;
+    this.collection = conn.models.User as Model<UserDocument>;
   }
 
   /**
@@ -22,14 +27,14 @@ export default class UserRepository {
    * @param role the user role to login
    */
   async login(
-    credentials: { email: string; password: string },
+    credentials: UserLoginData,
     role: UserRole = USER_ROLES.EMPLOYEE
   ) {
     const { email, password } = credentials;
 
     let user: UserDocument | null;
     try {
-      user = await this.repo.findOne({ email, role });
+      user = await this.collection.findOne({ email, role });
     } catch (error) {
       throw new ServerException();
     }
@@ -50,14 +55,14 @@ export default class UserRepository {
    * @param role the user role to login
    */
   async registerEmployee(credentials: User) {
-    let user: UserDocument | null;
+    let user: UserDocument;
 
     credentials.password = await PasswordUtil.hashPassword(
       credentials.password
     );
 
     try {
-      user = await this.repo.create(credentials);
+      user = await this.collection.create(credentials);
     } catch (error) {
       throw new ServerException();
     }
@@ -70,7 +75,7 @@ export default class UserRepository {
     let users: UserDocument[];
 
     try {
-      users = await this.repo.find({ role: USER_ROLES.EMPLOYEE });
+      users = await this.collection.find({ role: USER_ROLES.EMPLOYEE });
     } catch (error) {
       throw new ServerException();
     }
@@ -86,7 +91,7 @@ export default class UserRepository {
     let user: UserDocument | null = null;
 
     try {
-      user = await this.repo.findById(id);
+      user = await this.collection.findById(id);
     } catch (err: any) {
       throw new ServerException(err.message);
     }

@@ -1,14 +1,14 @@
 import { Model, model } from "mongoose";
-import userSchema from "./setup/schemas/user.schema";
-import pumpSchema from "./setup/schemas/pump.schema";
+import userSchema from "../modules/user/user.schema";
+import saleSchema from "../modules/sale/sale.schema";
 
 export default function registerModels() {
   if (!global.registeredModels) {
     console.log("Registering User Model");
     model("User", userSchema);
 
-    console.log("Registering Pump Model");
-    model("Pump", pumpSchema);
+    console.log("Registering Sale Model");
+    model("Sale", saleSchema);
 
     global.registeredModels = true;
   }

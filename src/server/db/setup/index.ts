@@ -1,5 +1,5 @@
 import type _mongoose from "mongoose";
-import userSchema from "./schemas/user.schema";
+import userSchema from "../../modules/user/user.schema";
 import connectDB from "../connect";
 
 async function setupDatabase() {

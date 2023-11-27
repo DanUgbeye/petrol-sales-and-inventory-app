@@ -1,5 +1,5 @@
-import { USER_ROLES } from "./../../../modules/user/user.types";
-import { UserDocument } from "./../../../modules/user/user.types";
+import { USER_ROLES } from "@/global-types/user.types";
+import { UserDocument } from "./user.types";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema<UserDocument>(
