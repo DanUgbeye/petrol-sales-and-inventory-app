@@ -1,6 +1,6 @@
+import { UserRole } from "@/global-types/user.types";
 import { SERVER_CONFIG } from "@/server/config/server.config";
 import { AuthenticationException } from "@/server/exceptions";
-import { UserRole } from "@/server/modules/user/user.types";
 import jwt from "jsonwebtoken";
 
 const secret = SERVER_CONFIG.TOKEN_SECRET;

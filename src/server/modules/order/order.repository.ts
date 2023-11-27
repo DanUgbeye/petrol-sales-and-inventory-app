@@ -6,7 +6,8 @@ import {
   NotFoundException,
   ServerException,
 } from "@/server/exceptions";
-import { Order } from "@/global-types/order.types";
+import { ORDER_STATUS, Order } from "@/global-types/order.types";
+import InventoryRepository from "../inventory/inventory.repository";
 
 export default class OrderRepository {
   public collection: Model<OrderDocument>;
@@ -69,14 +70,30 @@ export default class OrderRepository {
   }
 
   /**
-   * creates a new order
-   * @param newOrder order data
+   * marks an order as complete a new order
+   * @param id order id
    */
-  async completeOrder(newOrder: Partial<Order>) {
-    let order: OrderDocument;
+  async completeOrder(id: string) {
+    let order: OrderDocument | null;
 
     try {
-      order = await this.collection.create(newOrder);
+      order = await this.collection.findById(id);
+    } catch (error: any) {
+      throw new ServerException(error.message);
+    }
+
+    if (!order) {
+      throw new NotFoundException("order not found");
+    }
+
+    if (order.status === ORDER_STATUS.COMPLETED) {
+      throw new BadRequestException("order already completed");
+    }
+
+    order.status = ORDER_STATUS.COMPLETED;
+
+    try {
+      await order.save();
     } catch (error: any) {
       throw new ServerException(error.message);
     }

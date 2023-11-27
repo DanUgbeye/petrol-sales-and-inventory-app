@@ -58,7 +58,7 @@ export default class InventoryRepository {
   /**
    * gets all inventory
    */
-  async getInventory() {
+  async getAllInventory() {
     let inventory: InventoryDocument[];
 
     try {

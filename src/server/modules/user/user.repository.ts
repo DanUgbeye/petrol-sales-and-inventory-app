@@ -51,33 +51,33 @@ export default class UserRepository {
 
   /**
    * registers a new employee
-   * @param credentials user credentials
-   * @param role the user role to login
+   * @param employeeData employee data
    */
-  async registerEmployee(credentials: User) {
-    let user: UserDocument;
-
-    credentials.password = await PasswordUtil.hashPassword(
-      credentials.password
-    );
+  async registerEmployee(employeeData: User) {
+    let employee: UserDocument;
 
     try {
-      user = await this.collection.create(credentials);
-    } catch (error) {
-      throw new ServerException();
+      employeeData.password = await PasswordUtil.hashPassword(
+        employeeData.password
+      );
+      employeeData.role = USER_ROLES.EMPLOYEE;
+
+      employee = await this.collection.create(employeeData);
+    } catch (error: any) {
+      throw new ServerException(error.message);
     }
 
-    return user;
+    return employee;
   }
 
   /** gets all employees */
-  async findAllEmployees() {
+  async getAllEmployees() {
     let users: UserDocument[];
 
     try {
       users = await this.collection.find({ role: USER_ROLES.EMPLOYEE });
-    } catch (error) {
-      throw new ServerException();
+    } catch (error: any) {
+      throw new ServerException(error.message);
     }
 
     return users;
@@ -98,6 +98,26 @@ export default class UserRepository {
 
     if (!user) {
       throw new NotFoundException("user profile not found");
+    }
+
+    return user;
+  }
+
+  /**
+   * deletes a user
+   * @param id user id to delete
+   */
+  async deleteUser(id: string) {
+    let user: UserDocument | null = null;
+
+    try {
+      user = await this.collection.findByIdAndDelete(id);
+    } catch (err: any) {
+      throw new ServerException(err.message);
+    }
+
+    if (!user) {
+      throw new NotFoundException("user not found");
     }
 
     return user;

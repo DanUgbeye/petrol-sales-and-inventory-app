@@ -1,11 +1,12 @@
 import type _mongoose from "mongoose";
 import type { Model } from "mongoose";
-import { Sale, SaleDocument } from "./sale.types";
+import { SaleDocument } from "./sale.types";
 import {
   BadRequestException,
   NotFoundException,
   ServerException,
 } from "@/server/exceptions";
+import { Sale } from "@/global-types/sales.types";
 
 export default class SaleRepository {
   public collection: Model<SaleDocument>;
@@ -62,6 +63,27 @@ export default class SaleRepository {
       sale = await this.collection.create(newSale);
     } catch (error: any) {
       throw new ServerException(error.message);
+    }
+
+    return sale;
+  }
+
+  /**
+   * updates a sale
+   * @param id sale id
+   * @param newSale sale data
+   */
+  async updateSale(id: string, newSale: Partial<Sale>) {
+    let sale: SaleDocument | null;
+
+    try {
+      sale = await this.collection.findByIdAndUpdate(id, newSale);
+    } catch (error: any) {
+      throw new ServerException(error.message);
+    }
+
+    if (!sale) {
+      throw new NotFoundException("sale not found");
     }
 
     return sale;
