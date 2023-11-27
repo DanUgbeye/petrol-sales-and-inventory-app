@@ -4,10 +4,12 @@ import { USER_ROLES } from "@/server/modules/user/user.types";
 import UserRepository from "@/server/modules/user/user.repository";
 import ServerResponse from "@/server/utils/response";
 import { TokenUtil } from "@/server/utils/token";
-import { UserLoginData } from "@/global-types/user.types";
 
 async function ManagerLogin(req: Request) {
-  let body = (await req.json()) as UserLoginData;
+  let body = (await req.json()) as {
+    email: string;
+    password: string;
+  };
 
   try {
     const conn = await connectDB();
@@ -16,7 +18,7 @@ async function ManagerLogin(req: Request) {
     }
 
     const userRepo = new UserRepository(conn);
-    const data = await userRepo.login(body, USER_ROLES.EMPLOYEE);
+    const data = await userRepo.login(body, USER_ROLES.MANAGER);
 
     const { password, ...user } = data.toObject();
     const tokenUtil = new TokenUtil();

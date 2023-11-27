@@ -1,13 +1,9 @@
+import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
-import {
-  AuthenticationException,
-  BaseException,
-  ServerException,
-} from "@/server/exceptions";
+import { ServerException } from "@/server/exceptions";
 import AuthHelpers from "@/server/modules/auth/auth.helpers";
 import UserRepository from "@/server/modules/user/user.repository";
 import ServerResponse from "@/server/utils/response";
-import { TokenUtil } from "@/server/utils/token";
 import { NextRequest } from "next/server";
 
 type RouteParams = {
@@ -15,19 +11,23 @@ type RouteParams = {
 };
 
 /**
- * gets a user profile
- * @route GET - .../v1/auth/profile/:id
+ * gets logged in manager profile
+ * @route GET - .../v1/manager/profile
  */
-async function GetProfile(req: NextRequest, context: { params: RouteParams }) {
+async function getManagerProfile(
+  req: NextRequest,
+  context: { params: RouteParams }
+) {
   try {
-    const conn = await connectDB();
+    const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.MANAGER]);
 
+    const conn = await connectDB();
     if (!conn) {
       return ServerResponse.error(new ServerException());
     }
 
     const userRepo = new UserRepository(conn);
-    const data = await userRepo.getProfile(context.params.id);
+    const data = await userRepo.getProfile(userAuth._id);
     let { password, ...user } = data.toObject();
 
     return ServerResponse.success("Profile Retrieved", user, 200);
@@ -36,4 +36,4 @@ async function GetProfile(req: NextRequest, context: { params: RouteParams }) {
   }
 }
 
-export { GetProfile as GET };
+export { getManagerProfile as GET };
