@@ -5,7 +5,11 @@ import ServerResponse from "@/server/utils/response";
 import { TokenUtil } from "@/server/utils/token";
 import { USER_ROLES, UserLoginData } from "@/global-types/user.types";
 
-async function ManagerLogin(req: Request) {
+/**
+ * logs in an employee 
+ * @route GET - .../v1/auth/employee-login
+ */
+async function EmployeeLogin(req: Request) {
   let body = (await req.json()) as UserLoginData;
 
   try {
@@ -29,4 +33,4 @@ async function ManagerLogin(req: Request) {
   }
 }
 
-export { ManagerLogin as POST };
+export { EmployeeLogin as POST };

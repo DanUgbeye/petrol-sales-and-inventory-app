@@ -1,11 +1,7 @@
 import type _mongoose from "mongoose";
 import type { Model } from "mongoose";
 import { InventoryDocument } from "./inventory.types";
-import {
-  BadRequestException,
-  NotFoundException,
-  ServerException,
-} from "@/server/exceptions";
+import { NotFoundException, ServerException } from "@/server/exceptions";
 import { Inventory, InventoryType } from "@/global-types/inventory.types";
 
 export default class InventoryRepository {
