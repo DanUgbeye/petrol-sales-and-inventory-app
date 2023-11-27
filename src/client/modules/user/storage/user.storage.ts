@@ -1,5 +1,5 @@
 import { IPersistentStorage } from "@/client/global-utils/persistent-storage";
-import { IUser } from "../dto";
+import { User } from "@/global-types/user.types";
 
 export class UserStorage {
   private storage: IPersistentStorage;
@@ -9,14 +9,14 @@ export class UserStorage {
     this.storage = persistentStorage;
   }
 
-  saveUser(data: IUser | null): void {
+  saveUser(data: User | null): void {
     this.storage.save(this.storageKey, data);
   }
 
-  getUser(): IUser | null {
+  getUser(): User | null {
     const data = this.storage.retrieve(this.storageKey);
     // validate here
-    return data as IUser | null;
+    return data as User | null;
   }
 
   deleteUser(): void {

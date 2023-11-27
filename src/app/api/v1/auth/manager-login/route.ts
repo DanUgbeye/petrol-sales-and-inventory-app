@@ -1,6 +1,6 @@
+import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
-import { BaseException, ServerException } from "@/server/exceptions";
-import { USER_ROLES } from "@/server/modules/user/user.types";
+import { ServerException } from "@/server/exceptions";
 import UserRepository from "@/server/modules/user/user.repository";
 import ServerResponse from "@/server/utils/response";
 import { TokenUtil } from "@/server/utils/token";

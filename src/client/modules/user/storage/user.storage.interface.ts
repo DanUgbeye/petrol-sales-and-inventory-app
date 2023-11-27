@@ -1,7 +1,7 @@
-import { IUser } from "../dto/user.dto.interface";
+import { User } from "@/global-types/user.types";
 
 export interface IUserStorage {
-  saveUser(data: IUser | null): void;
-  getUser(): IUser | null;
+  saveUser(data: User | null): void;
+  getUser(): User | null;
   deleteUser(): void;
 }

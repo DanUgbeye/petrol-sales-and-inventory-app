@@ -1,10 +1,9 @@
 import connectDB from "@/server/db/connect";
-import { BaseException, ServerException } from "@/server/exceptions";
-import { USER_ROLES } from "@/server/modules/user/user.types";
+import { ServerException } from "@/server/exceptions";
 import UserRepository from "@/server/modules/user/user.repository";
 import ServerResponse from "@/server/utils/response";
 import { TokenUtil } from "@/server/utils/token";
-import { UserLoginData } from "@/global-types/user.types";
+import { USER_ROLES, UserLoginData } from "@/global-types/user.types";
 
 async function ManagerLogin(req: Request) {
   let body = (await req.json()) as UserLoginData;

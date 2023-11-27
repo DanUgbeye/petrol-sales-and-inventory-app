@@ -1,9 +1,9 @@
-import { IUser, IUserServerData } from "../dto/user.dto.interface";
+import { User } from "@/global-types/user.types";
 
 export interface IUserAPIService {
-  signup(data: IUserServerData): Promise<IUserServerData>;
-  login(data: IUserServerData): Promise<IUserServerData>;
-  getProfile(): Promise<IUserServerData>;
-  updateProfile(data: Partial<IUserServerData>): IUserServerData;
+  signup(data: User): Promise<User>;
+  login(data: User): Promise<User>;
+  getProfile(): Promise<User>;
+  updateProfile(data: Partial<User>): User;
   deleteProfile(): Promise<boolean>;
 }

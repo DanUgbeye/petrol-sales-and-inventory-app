@@ -1,7 +1,7 @@
-import { IUser } from "../dto/user.dto.interface";
+import { User } from "@/global-types/user.types";
 
 export interface IUserStore {
-  data: IUser | null;
-  getCurrentUser(): IUser | null;
-  setCurentUser(user: IUser | null): void;
+  data: User | null;
+  getCurrentUser(): User | null;
+  setCurentUser(user: User | null): void;
 }
