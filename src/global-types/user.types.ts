@@ -10,7 +10,7 @@ export interface User {
   name: string;
   role: UserRole;
   sex: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   password: string;
 }
 
