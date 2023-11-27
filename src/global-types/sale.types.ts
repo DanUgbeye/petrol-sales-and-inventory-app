@@ -6,4 +6,16 @@ export interface Sale {
   inventoryType: InventoryType;
   quantity: number;
   pricePerLitre: number;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export type SaleStat = {
+  quantity: number;
+  amount: number;
+};
+
+export type AppSalesStat = {
+  total: SaleStat;
+  month: SaleStat;
+};

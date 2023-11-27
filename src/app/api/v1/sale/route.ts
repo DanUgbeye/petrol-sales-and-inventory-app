@@ -1,4 +1,4 @@
-import { Sale } from "@/global-types/sales.types";
+import { Sale } from "@/global-types/sale.types";
 import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
 import { BadRequestException, ServerException } from "@/server/exceptions";
@@ -29,7 +29,7 @@ async function recordSale(req: NextRequest) {
     const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.EMPLOYEE]);
 
     const saleData = (await req.json()) as Sale;
-    
+
     if (saleData.quantity < 0) {
       throw new BadRequestException("quantity can only be a positive number");
     }

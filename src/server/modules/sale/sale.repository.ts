@@ -1,12 +1,12 @@
 import type _mongoose from "mongoose";
-import type { Model } from "mongoose";
+import type { FilterQuery, Model, Schema } from "mongoose";
 import { SaleDocument } from "./sale.types";
 import {
   BadRequestException,
   NotFoundException,
   ServerException,
 } from "@/server/exceptions";
-import { Sale } from "@/global-types/sales.types";
+import { Sale, SaleStat } from "@/global-types/sale.types";
 
 export default class SaleRepository {
   public collection: Model<SaleDocument>;
@@ -50,6 +50,58 @@ export default class SaleRepository {
     }
 
     return sale;
+  }
+
+  /**
+   *  gets total sales stats
+   *  @param employeeId get stats for employee if specified
+   *  @param forCurrentMonth get stats for current month only
+   */
+  async getTotalSalesStats(
+    employeeId?: string | null,
+    forCurrentMonth?: boolean
+  ) {
+    let stat: SaleStat[];
+
+    const query: FilterQuery<Sale> = {};
+    // get stats for only employee
+    if (employeeId) {
+      query.employeeId = employeeId;
+    }
+    // get only for current month
+    if (forCurrentMonth) {
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+      query.createdAt = { $gte: startOfMonth };
+    }
+
+    try {
+      stat = await this.collection.aggregate([
+        {
+          $match: query,
+        },
+        {
+          $group: {
+            _id: null,
+            quantity: { $sum: "$quantity" },
+            amount: {
+              $sum: { $multiply: ["$quantity", "$pricePerLitre"] },
+            },
+          },
+        },
+      ]);
+    } catch (error: any) {
+      throw new ServerException(error.message);
+    }
+
+    const { amount, quantity } = stat[0];
+    const saleStat = {
+      amount,
+      quantity,
+    };
+
+    return saleStat;
   }
 
   /**
