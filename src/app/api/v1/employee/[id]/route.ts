@@ -27,7 +27,7 @@ async function getEmployeeProfile(req: NextRequest, context: RouteContext) {
     const data = await userRepo.getProfile(context.params.id);
     let { password, ...user } = data.toObject();
 
-    return ServerResponse.success("Profile Retrieved", user, 200);
+    return ServerResponse.success("Employee Profile Retrieved", user, 200);
   } catch (err: any) {
     return ServerResponse.error(err);
   }
@@ -51,7 +51,7 @@ async function removeEmployee(req: NextRequest, context: RouteContext) {
     const data = await userRepo.deleteUser(context.params.id);
     let { password, ...user } = data.toObject();
 
-    return ServerResponse.success("Profile Retrieved", 204);
+    return ServerResponse.success("Employee removed", 200);
   } catch (err: any) {
     return ServerResponse.error(err);
   }

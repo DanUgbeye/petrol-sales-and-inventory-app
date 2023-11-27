@@ -109,13 +109,24 @@ export default class OrderRepository {
     let order: OrderDocument | null;
 
     try {
-      order = await this.collection.findByIdAndDelete(id);
+      order = await this.collection.findById(id);
     } catch (error: any) {
       throw new ServerException(error.message);
     }
 
     if (!order) {
       throw new NotFoundException("Order not found");
+    }
+
+    if (order.status === ORDER_STATUS.COMPLETED) {
+      throw new BadRequestException("Order already completed");
+    }
+
+    try {
+      await order.deleteOne()
+      // order = await this.collection.findByIdAnd(id);
+    } catch (error: any) {
+      throw new ServerException(error.message);
     }
 
     return order;

@@ -77,7 +77,9 @@ export default class SaleRepository {
     let sale: SaleDocument | null;
 
     try {
-      sale = await this.collection.findByIdAndUpdate(id, newSale);
+      sale = await this.collection.findByIdAndUpdate(id, newSale, {
+        new: true,
+      });
     } catch (error: any) {
       throw new ServerException(error.message);
     }

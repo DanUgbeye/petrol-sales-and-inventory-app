@@ -91,7 +91,9 @@ export default class InventoryRepository {
     let inventory: InventoryDocument | null;
 
     try {
-      inventory = await this.collection.findByIdAndUpdate(id, inventoryData);
+      inventory = await this.collection.findByIdAndUpdate(id, inventoryData, {
+        new: true,
+      });
     } catch (error: any) {
       throw new ServerException(error.message);
     }

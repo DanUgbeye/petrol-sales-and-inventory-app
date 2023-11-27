@@ -27,6 +27,14 @@ async function updateSale(req: Request, context: RouteContext) {
   try {
     const saleId = context.params.id;
     const saleData = await req.json();
+    // validations
+    if (saleData.quantity && saleData.quantity < 0) {
+      throw new BadRequestException("quantity can only be a positive number");
+    }
+
+    if (saleData.type) {
+      delete saleData.type;
+    }
 
     const conn = await connectDB();
     if (!conn) {
@@ -37,24 +45,24 @@ async function updateSale(req: Request, context: RouteContext) {
     const inventoryRepo = new InventoryRepository(conn);
 
     const previousSale = await saleRepo.getSaleById(saleId);
-    // quantity of product to add back to inventory
-    const quantityDifference = previousSale.quantity - saleData.quantity;
-
+    
     // update inventory if quantity is included in update
     if (saleData.quantity) {
+      // quantity of product to add back to inventory
+      const quantityDifference = previousSale.quantity - saleData.quantity;
       const inventory = await inventoryRepo.getInventoryById(
-        saleData.inventoryId
+        previousSale.inventoryId
       );
 
       if (inventory.quantity + quantityDifference < 0) {
         throw new BadRequestException("inventory too low");
       }
 
-      await inventoryRepo.updateInventory(saleData.inventoryId, {
-        quantity: inventory.quantity - quantityDifference,
+      await inventoryRepo.updateInventory(previousSale.inventoryId, {
+        quantity: inventory.quantity + quantityDifference,
       });
 
-      saleData.quantity = quantityDifference;
+      // saleData.quantity = quantityDifference;
     }
 
     const update = await saleRepo.updateSale(saleId, saleData);
@@ -88,7 +96,7 @@ async function deleteSale(req: Request, context: RouteContext) {
 
     await saleRepo.deleteSale(saleId);
 
-    return ServerResponse.success("Sale deleted", 204);
+    return ServerResponse.success("Sale deleted", 200);
   } catch (err: any) {
     return ServerResponse.error(err);
   }

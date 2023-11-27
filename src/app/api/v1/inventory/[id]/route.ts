@@ -45,7 +45,7 @@ async function deleteInventory(req: NextRequest, context: RouteContext) {
     const inventoryRepo = new InventoryRepository(conn);
     const inventory = await inventoryRepo.deleteInventory(context.params.id);
 
-    return ServerResponse.success("inventory deleted", 204);
+    return ServerResponse.success("inventory deleted", 200);
   } catch (err: any) {
     return ServerResponse.error(err);
   }

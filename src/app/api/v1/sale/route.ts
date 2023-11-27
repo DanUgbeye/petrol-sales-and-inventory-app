@@ -26,11 +26,14 @@ async function getAllSales(req: NextRequest) {
 
 async function recordSale(req: NextRequest) {
   try {
-    const authPayload = AuthHelpers.authenticateUser(req, [
-      USER_ROLES.EMPLOYEE,
-    ]);
+    const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.EMPLOYEE]);
 
     const saleData = (await req.json()) as Sale;
+    
+    if (saleData.quantity < 0) {
+      throw new BadRequestException("quantity can only be a positive number");
+    }
+
     const conn = await connectDB();
     if (!conn) {
       return ServerResponse.error(new ServerException());
@@ -46,7 +49,12 @@ async function recordSale(req: NextRequest) {
     }
 
     const saleRepo = new SaleRepository(conn);
-    const sale = await saleRepo.recordSale(saleData);
+    const sale = await saleRepo.recordSale({
+      ...saleData,
+      inventoryType: inventory.type,
+      employeeId: userAuth._id,
+      pricePerLitre: inventory.pricePerLitre,
+    });
 
     await inventoryRepo.updateInventory(saleData.inventoryId, {
       quantity: inventory.quantity - sale.quantity,

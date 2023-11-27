@@ -45,7 +45,7 @@ async function deleteOrder(req: NextRequest, context: RouteContext) {
     const orderRepo = new OrderRepository(conn);
     const order = await orderRepo.deleteOrder(context.params.id);
 
-    return ServerResponse.success("order deleted", 204);
+    return ServerResponse.success("order deleted", 200);
   } catch (err: any) {
     return ServerResponse.error(err);
   }
