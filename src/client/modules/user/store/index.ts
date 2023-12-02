@@ -1,2 +1,2 @@
-export * from "./user.store.interface";
+export { default } from "./user.store";
 export * from "./user.store";

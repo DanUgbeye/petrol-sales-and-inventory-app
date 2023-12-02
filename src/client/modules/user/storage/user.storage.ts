@@ -9,17 +9,17 @@ export class UserStorage {
     this.storage = persistentStorage;
   }
 
-  saveUser(data: User | null): void {
+  save(data: User | null): void {
     this.storage.save(this.storageKey, data);
   }
 
-  getUser(): User | null {
+  get(): User | null {
     const data = this.storage.retrieve(this.storageKey);
     // validate here
     return data as User | null;
   }
 
-  deleteUser(): void {
+  delete(): void {
     this.storage.delete(this.storageKey);
   }
 }

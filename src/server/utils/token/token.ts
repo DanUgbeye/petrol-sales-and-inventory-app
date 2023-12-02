@@ -1,3 +1,4 @@
+import { AuthData } from "@/global-types/auth.types";
 import { UserRole } from "@/global-types/user.types";
 import { SERVER_CONFIG } from "@/server/config/server.config";
 import { AuthenticationException } from "@/server/exceptions";
@@ -18,10 +19,14 @@ export class TokenUtil {
    * @param data the data to create a token with
    * @param expiresIn the jwt token expiry time in seconds
    */
-  createJwtToken(data: AuthTokenPayload, expiresIn: number = _3_DAYS) {
+  createJwtToken(
+    data: AuthTokenPayload,
+    expiresIn: number = _3_DAYS
+  ): AuthData {
     return {
       token: jwt.sign(data, secret, { expiresIn }),
       expiresIn: Date.now() + expiresIn * 1000,
+      role: data.role,
     };
   }
 

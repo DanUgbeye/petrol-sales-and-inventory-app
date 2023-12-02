@@ -18,3 +18,11 @@ export type UserLoginData = {
   email: string;
   password: string;
 };
+
+export type NewEmployeeData = {
+  email: string;
+  fullname: string;
+  password: string;
+  sex: string;
+  phoneNumber: string;
+};

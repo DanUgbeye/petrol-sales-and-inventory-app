@@ -10,7 +10,7 @@ export class LocalStorage implements IPersistentStorage {
     if (typeof window === "undefined") {
       return false;
     }
-    window.localStorage.window.localStorage.setItem(key, JSON.stringify(data));
+    window.localStorage.setItem(key, JSON.stringify(data));
     return true;
   }
 
