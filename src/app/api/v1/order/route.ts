@@ -27,6 +27,7 @@ async function getAllOrders(req: NextRequest) {
     return ServerResponse.error(err);
   }
 }
+
 /**
  * creates a new order
  * @route POST - ../v1/order

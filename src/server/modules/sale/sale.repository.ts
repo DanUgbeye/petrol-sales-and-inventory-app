@@ -1,11 +1,7 @@
 import type _mongoose from "mongoose";
 import type { FilterQuery, Model, Schema } from "mongoose";
 import { SaleDocument } from "./sale.types";
-import {
-  BadRequestException,
-  NotFoundException,
-  ServerException,
-} from "@/server/exceptions";
+import { NotFoundException, ServerException } from "@/server/exceptions";
 import { Sale, SaleStat } from "@/global-types/sale.types";
 
 export default class SaleRepository {

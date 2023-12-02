@@ -8,6 +8,10 @@ import SaleRepository from "@/server/modules/sale/sale.repository";
 import ServerResponse from "@/server/utils/response";
 import { NextRequest } from "next/server";
 
+/**
+ * gets all sales
+ * @route GET - ../v1/sale
+ */
 async function getAllSales(req: NextRequest) {
   try {
     const conn = await connectDB();
@@ -24,6 +28,10 @@ async function getAllSales(req: NextRequest) {
   }
 }
 
+/**
+ * records a new a sale
+ * @route POST - ../v1/sale
+ */
 async function recordSale(req: NextRequest) {
   try {
     const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.EMPLOYEE]);

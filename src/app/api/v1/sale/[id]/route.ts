@@ -3,11 +3,16 @@ import { BadRequestException, ServerException } from "@/server/exceptions";
 import InventoryRepository from "@/server/modules/inventory/inventory.repository";
 import SaleRepository from "@/server/modules/sale/sale.repository";
 import ServerResponse from "@/server/utils/response";
+import { NextRequest } from "next/server";
 
 type RouteParams = { id: string };
 type RouteContext = { params: RouteParams };
 
-async function getSaleById(req: Request, context: RouteContext) {
+/**
+ * gets a sale using id
+ * @route GET - ../v1/sale/:id
+ */
+async function getSaleById(req: NextRequest, context: RouteContext) {
   try {
     const conn = await connectDB();
     if (!conn) {
@@ -23,7 +28,11 @@ async function getSaleById(req: Request, context: RouteContext) {
   }
 }
 
-async function updateSale(req: Request, context: RouteContext) {
+/**
+ * updates a sale
+ * @route PATCH - ../v1/sale/:id
+ */
+async function updateSale(req: NextRequest, context: RouteContext) {
   try {
     const saleId = context.params.id;
     const saleData = await req.json();
@@ -45,7 +54,7 @@ async function updateSale(req: Request, context: RouteContext) {
     const inventoryRepo = new InventoryRepository(conn);
 
     const previousSale = await saleRepo.getSaleById(saleId);
-    
+
     // update inventory if quantity is included in update
     if (saleData.quantity) {
       // quantity of product to add back to inventory
@@ -73,7 +82,11 @@ async function updateSale(req: Request, context: RouteContext) {
   }
 }
 
-async function deleteSale(req: Request, context: RouteContext) {
+/**
+ * deletes a sale
+ * @route DELETE - ../v1/sale/:id
+ */
+async function deleteSale(req: NextRequest, context: RouteContext) {
   try {
     const saleId = context.params.id;
 
