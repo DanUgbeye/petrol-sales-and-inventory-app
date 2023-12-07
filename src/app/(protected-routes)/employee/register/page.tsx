@@ -10,51 +10,46 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import useAuth from "@/client/presentation/features/user/hooks/useAuth.hook";
 import useUser from "@/client/presentation/features/user/hooks/useUser.hook";
+import { observer } from "mobx-react";
+import WithPrimaryLayout from "@/client/presentation/layouts/primary-layout/WithPrimaryLayout";
+import { AuthAPIService } from "@/client/modules/auth/api";
+import apiService from "@/client/modules/api/api";
+import { NewEmployeeData } from "@/global-types/user.types";
 
-export default function UserSignup() {
+function RegisterEmployeePage() {
   const router = useRouter();
   const { auth } = useAuth();
   const {} = useUser();
 
-  const initialValues: {
-    fullname: string;
-    email: string;
-    phoneNumber: string;
-    sex: string;
-    password: string;
-  } = {
-    fullname: "",
+  const initialValues: NewEmployeeData = {
+    name: "",
     email: "",
     password: "",
     phoneNumber: "",
     sex: "",
   };
 
-  React.useEffect(() => {
-    if (auth) {
-      router.replace("/dashboard");
-      toast.success("LOGIN SESSION AVAILABLE", { toastId: "login-session" });
+  async function handleSubmit(values: NewEmployeeData) {
+    const authService = new AuthAPIService(apiService);
+
+    try {
+      const res = await authService.register(values);
+      toast.success("employee added successfully");
+    } catch (error: any) {
+      toast.error(error.message);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }
 
   return (
-    <main className=" min-h-screen bg-gradient-to-br from-fuchsia-800 via-purple-800 to-violet-800 ">
+    <main className=" min-h-screen ">
       <Container className="  ">
-        <div className=" flex flex-col gap-y-4 py-12 text-center uppercase leading-relaxed text-white ">
-          <h2 className=" text-4xl font-bold  ">USER SIGNUP</h2>
-          <div className=" text-xl ">Signup for an account</div>
-        </div>
-
         <Formik
           initialValues={initialValues}
-          // validationSchema={loginSchema}
           validateOnChange={false}
           validateOnBlur={true}
-          onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
-            // setSubmitting(false);
-            toast.success("hello world");
+          onSubmit={async (values, { setSubmitting }) => {
+            await handleSubmit(values);
+            setSubmitting(false);
           }}
         >
           {({
@@ -69,18 +64,24 @@ export default function UserSignup() {
             <>
               <form
                 onSubmit={handleSubmit}
-                className="  mx-auto w-full max-w-xl rounded-lg bg-white px-6 py-12 sm:px-12 "
+                className="  mx-auto w-full max-w-4xl rounded-lg bg-white px-6 py-12 sm:px-12 "
               >
-                <fieldset className=" mb-9 flex flex-col gap-y-6 ">
+                <div className=" flex flex-col gap-y-4 py-4 text-center uppercase leading-relaxed text-blue-500 ">
+                  <h2 className=" text-4xl font-bold  ">
+                    Register New Employee
+                  </h2>
+                </div>
+
+                <fieldset className=" mb-9 grid grid-cols-2 gap-x-4 gap-y-4 ">
                   <Input
-                    id="fullname"
-                    name="fullname"
+                    id="name"
+                    name="name"
                     label="Fullname"
                     type="text"
-                    placeholder="fullname"
-                    error={errors.fullname || ""}
-                    touched={touched.fullname}
-                    value={values.fullname}
+                    placeholder="name"
+                    error={errors.name || ""}
+                    touched={touched.name}
+                    value={values.name}
                     onBlur={handleBlur}
                     onChange={handleChange}
                   />
@@ -115,6 +116,7 @@ export default function UserSignup() {
                     label="Sex"
                     name="sex"
                     id="sex"
+                    className=" text-black "
                     value={values.sex}
                     onChange={handleChange}
                     options={[
@@ -137,13 +139,16 @@ export default function UserSignup() {
                   />
                 </fieldset>
 
-                <Button
-                  type="submit"
-                  loading={isSubmitting}
-                  disabled={isSubmitting}
-                >
-                  Signup
-                </Button>
+                <div className="  ">
+                  <Button
+                    type="submit"
+                    className=" max-w-sm "
+                    loading={isSubmitting}
+                    disabled={isSubmitting}
+                  >
+                    Create
+                  </Button>
+                </div>
               </form>
             </>
           )}
@@ -161,3 +166,5 @@ export default function UserSignup() {
     </main>
   );
 }
+
+export default observer(WithPrimaryLayout(RegisterEmployeePage));

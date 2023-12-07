@@ -3,10 +3,11 @@ import {
   AuthorizationException,
   ServerException,
 } from "@/server/exceptions";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { UserDocument } from "../user/user.types";
 import { TokenUtil } from "@/server/utils/token";
 import { USER_ROLES, UserRole } from "@/global-types/user.types";
+import { headers } from "next/headers";
 
 export default class AuthHelpers {
   /**
@@ -26,7 +27,7 @@ export default class AuthHelpers {
    * @param {NextRequest} req Next Request Object
    */
   static extractAuthToken(req: NextRequest) {
-    let authHeader = req.headers.get("Authorization");
+    let authHeader = req.headers.get("authorization");
     if (!authHeader) {
       return null;
     }

@@ -21,7 +21,7 @@ export class ApiService {
       timeout: 30000,
     });
     this.token = "";
-    this.axios.defaults.headers.common["auth-token"] = "";
+    this.axios.defaults.headers.common["authorization"] = "";
   }
 
   getBaseUrl() {
@@ -30,7 +30,7 @@ export class ApiService {
 
   setToken(token: string) {
     this.token = token;
-    this.axios.defaults.headers.common["auth-token"] = token;
+    this.axios.defaults.headers.common["Authorization"] = "Bearer " + token;
   }
 
   getToken() {

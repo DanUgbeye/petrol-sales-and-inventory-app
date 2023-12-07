@@ -14,3 +14,8 @@ export interface Order {
   pricePerLitre: number;
   status: OrderStatus;
 }
+
+export type NewOrder = {
+  type: string;
+  quantity: number;
+};

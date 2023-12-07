@@ -13,6 +13,8 @@ import { observer } from "mobx-react";
 import userStore from "@/client/modules/user/store/user.store";
 import authStore from "@/client/modules/auth/store/auth.store";
 import { AuthAPIService } from "@/client/modules/auth/api";
+import { LocalStorage } from "@/client/global-utils/persistent-storage";
+import { AuthStorage, UserStorage } from "@/client/modules/user/storage";
 
 function ManagerLoginPage() {
   const router = useRouter();
@@ -36,6 +38,14 @@ function ManagerLoginPage() {
     authStore.setAuth(res.auth);
     userStore.setUser(res.user);
 
+    const localStorage = new LocalStorage();
+
+    const userStorage = new UserStorage(localStorage);
+    userStorage.save(res.user);
+
+    const authStorage = new AuthStorage(localStorage);
+    authStorage.save(res.auth);
+
     router.replace("/dashboard");
 
     toast.success("LOGIN SUCCESSFUL");
@@ -50,9 +60,9 @@ function ManagerLoginPage() {
   }, []);
 
   return (
-    <main className=" min-h-screen h-full ">
+    <main className=" h-full min-h-screen ">
       <Container className=" py-16 ">
-        <div className=" mx-auto w-full max-w-lg rounded-lg bg-white px-6 pt-12 pb-20 sm:px-12 ">
+        <div className=" mx-auto w-full max-w-lg rounded-lg bg-white px-6 pb-20 pt-12 sm:px-12 ">
           <div className=" mb-4 text-center text-4xl font-bold uppercase leading-relaxed text-blue-700 ">
             <h2 className="  ">MANAGER LOGIN</h2>
           </div>
@@ -62,7 +72,6 @@ function ManagerLoginPage() {
             validateOnChange={false}
             validateOnBlur={true}
             onSubmit={async (values, { setSubmitting }) => {
-              console.log(values);
               await handleSubmit(values);
               setSubmitting(false);
             }}

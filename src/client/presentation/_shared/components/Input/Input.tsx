@@ -19,7 +19,7 @@ export default function Input(props: InputProps) {
   return (
     <div className=" flex w-full flex-col ">
       {label && (
-        <label htmlFor={restProps.id} className=" mb-1 min-w-fit text-left ">
+        <label htmlFor={restProps.id} className=" mb-1 min-w-fit text-left text-black ">
           {label}
         </label>
       )}

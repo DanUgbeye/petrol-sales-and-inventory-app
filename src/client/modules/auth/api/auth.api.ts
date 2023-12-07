@@ -49,8 +49,10 @@ export class AuthAPIService {
    * @returns 
    */
   async register(data: NewEmployeeData, options?: RequestOptions) {
+    // console.log(this.service.axios.defaults.headers);
+
     try {
-      const path = "/auth/signup";
+      const path = "/employee";
 
       const res = await this.service.axios.post<
         ApiSuccessResponse<{

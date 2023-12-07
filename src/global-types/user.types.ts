@@ -21,7 +21,7 @@ export type UserLoginData = {
 
 export type NewEmployeeData = {
   email: string;
-  fullname: string;
+  name: string;
   password: string;
   sex: string;
   phoneNumber: string;

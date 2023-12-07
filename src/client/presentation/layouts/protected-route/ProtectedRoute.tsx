@@ -7,12 +7,19 @@ import useExecuteOnce from "@/client/presentation/_shared/hooks/useExecuteOnce.h
 import Spinner from "@/client/presentation/_shared/components/Spinner";
 import { toast } from "react-toastify";
 import { Container } from "@/client/presentation/_shared/components/Container";
+import { observer } from "mobx-react";
+import userStore from "@/client/modules/user/store/user.store";
+import authStore from "@/client/modules/auth/store/auth.store";
 
 export interface ProtectedRouteProps extends React.PropsWithChildren {}
 
-export default function ProtectedRoute(props: ProtectedRouteProps) {
-  const { userLoading, user } = useUser();
-  const { authLoading, auth } = useAuth();
+function ProtectedRoute(props: ProtectedRouteProps) {
+  const { userLoading } = useUser();
+  const { authLoading } = useAuth();
+
+  const user = userStore.getUser();
+  const auth = authStore.getAuth();
+
   const router = useRouter();
   const { executeOnce, reset } = useExecuteOnce();
 
@@ -49,3 +56,5 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
     </Container>
   );
 }
+
+export default observer(ProtectedRoute);

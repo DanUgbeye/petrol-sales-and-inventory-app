@@ -19,7 +19,7 @@ export default function Select(props: SelectProps) {
       {label && (
         <label
           htmlFor={rest.id}
-          className=" mb-1 min-w-fit text-left capitalize "
+          className=" mb-1 min-w-fit text-left capitalize text-black "
         >
           {label}
         </label>
