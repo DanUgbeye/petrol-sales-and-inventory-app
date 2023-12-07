@@ -15,7 +15,7 @@ export interface Order {
   status: OrderStatus;
 }
 
-export type NewOrder = {
-  type: string;
+export type NewSale = {
+  type: InventoryType;
   quantity: number;
 };

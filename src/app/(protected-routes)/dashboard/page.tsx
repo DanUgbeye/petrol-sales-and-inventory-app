@@ -4,11 +4,13 @@ import { SaleAPIService } from "@/client/modules/sale/api";
 import Button from "@/client/presentation/_shared/components/Button";
 import { Container } from "@/client/presentation/_shared/components/Container";
 import Input from "@/client/presentation/_shared/components/Input";
+import Select from "@/client/presentation/_shared/components/Select";
 import Spinner from "@/client/presentation/_shared/components/Spinner";
 import StatsCard from "@/client/presentation/_shared/components/StatsCard";
 import useUser from "@/client/presentation/features/user/hooks/useUser.hook";
 import WithPrimaryLayout from "@/client/presentation/layouts/primary-layout/WithPrimaryLayout";
-import { NewOrder } from "@/global-types/order.types";
+import { INVENTORY_TYPE } from "@/global-types/inventory.types";
+import { NewSale } from "@/global-types/order.types";
 import { USER_ROLES } from "@/global-types/user.types";
 import { Formik } from "formik";
 import { observer } from "mobx-react";
@@ -19,12 +21,12 @@ function DashboardPage() {
   const { user } = useUser();
   const loading = false;
 
-  const initialValues: NewOrder = {
-    quantity: 40000,
-    type: "",
+  const initialValues: NewSale = {
+    quantity: 0,
+    type: INVENTORY_TYPE.FUEL,
   };
 
-  async function handleSubmit(data: NewOrder) {
+  async function handleSubmit(data: NewSale) {
     const saleApi = new SaleAPIService(apiService);
     let res;
     try {
@@ -33,6 +35,8 @@ function DashboardPage() {
       toast.error(err.message);
       return;
     }
+
+    toast.success("sale recorded");
   }
 
   return user ? (
@@ -103,13 +107,10 @@ function DashboardPage() {
                 initialValues={initialValues}
                 validateOnChange={false}
                 validateOnBlur={true}
-                onSubmit={async (values, { setSubmitting }) => {
+                onSubmit={async (values, { setSubmitting, setValues }) => {
                   await handleSubmit(values);
-
-                  setTimeout(() => {
-                    console.log(values);
-                    setSubmitting(false);
-                  }, 2000);
+                  setSubmitting(false);
+                  setValues(initialValues);
                 }}
               >
                 {({
@@ -124,28 +125,31 @@ function DashboardPage() {
                   <>
                     <form onSubmit={handleSubmit} className="  w-full ">
                       <fieldset className=" mb-9 flex flex-col gap-y-4 ">
-                        <Input
+                        <Select
                           id="type"
                           name="type"
                           label="Inventory Type"
-                          type="text"
                           placeholder="inventory type"
                           error={errors.type || ""}
                           touched={touched.type}
                           value={values.type}
                           onBlur={handleBlur}
                           onChange={handleChange}
+                          options={[
+                            { name: "Fuel", value: "fuel" },
+                            { name: "Kerosene", value: "kerosene" },
+                          ]}
                         />
 
                         <Input
                           id="quantity"
                           name="quantity"
-                          label="Password"
+                          label="Quantity"
                           type="number"
                           placeholder="quantity"
                           error={errors.quantity || ""}
                           touched={touched.quantity}
-                          value={values.quantity}
+                          value={values.quantity || ""}
                           onBlur={handleBlur}
                           onChange={handleChange}
                         />

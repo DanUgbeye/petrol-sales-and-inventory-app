@@ -1,6 +1,6 @@
 "use client";
 import { ApiService, ApiSuccessResponse, RequestOptions } from "@/client/modules/api";
-import { NewOrder } from "@/global-types/order.types";
+import { NewSale } from "@/global-types/order.types";
 import { Sale } from "@/global-types/sale.types";
 
 export class SaleAPIService {
@@ -20,7 +20,7 @@ export class SaleAPIService {
       throw this.service.handleError(err);
     }
   }
-  async recordSale(data: NewOrder, options?: RequestOptions) {
+  async recordSale(data: NewSale, options?: RequestOptions) {
     try {
       const path = "/sale";
 

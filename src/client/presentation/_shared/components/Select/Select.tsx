@@ -15,7 +15,7 @@ export default function Select(props: SelectProps) {
   const { label, error, children, touched, options, ...rest } = props;
 
   return (
-    <div className=" flex flex-col ">
+    <div className=" flex flex-col text-black ">
       {label && (
         <label
           htmlFor={rest.id}

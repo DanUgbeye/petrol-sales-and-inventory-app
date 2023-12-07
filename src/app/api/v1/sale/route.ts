@@ -1,3 +1,4 @@
+import { NewSale } from "@/global-types/order.types";
 import { Sale } from "@/global-types/sale.types";
 import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
@@ -36,10 +37,10 @@ async function recordSale(req: NextRequest) {
   try {
     const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.EMPLOYEE]);
 
-    const saleData = (await req.json()) as Sale;
+    const saleData = (await req.json()) as NewSale;
 
-    if (saleData.quantity < 0) {
-      throw new BadRequestException("quantity can only be a positive number");
+    if (saleData.quantity <= 0) {
+      throw new BadRequestException("quantity must be greater than 0");
     }
 
     const conn = await connectDB();
@@ -48,8 +49,8 @@ async function recordSale(req: NextRequest) {
     }
 
     const inventoryRepo = new InventoryRepository(conn);
-    const inventory = await inventoryRepo.getInventoryById(
-      saleData.inventoryId
+    const inventory = await inventoryRepo.getInventoryByType(
+      saleData.type
     );
 
     if (inventory.quantity < saleData.quantity) {
@@ -59,12 +60,13 @@ async function recordSale(req: NextRequest) {
     const saleRepo = new SaleRepository(conn);
     const sale = await saleRepo.recordSale({
       ...saleData,
+      inventoryId: inventory._id,
       inventoryType: inventory.type,
       employeeId: userAuth._id,
       pricePerLitre: inventory.pricePerLitre,
     });
 
-    await inventoryRepo.updateInventory(saleData.inventoryId, {
+    await inventoryRepo.updateInventory(inventory._id, {
       quantity: inventory.quantity - sale.quantity,
     });
 

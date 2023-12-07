@@ -55,13 +55,13 @@ export default class OrderRepository {
 
   /**
    * creates a new order
-   * @param newOrder order data
+   * @param NewSale order data
    */
-  async createOrder(newOrder: Partial<Order>) {
+  async createOrder(NewSale: Partial<Order>) {
     let order: OrderDocument;
 
     try {
-      order = await this.collection.create(newOrder);
+      order = await this.collection.create(NewSale);
     } catch (error: any) {
       throw new ServerException(error.message);
     }
