@@ -5,14 +5,14 @@ import WithPrimaryLayout from "@/client/presentation/layouts/primary-layout/With
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 
-function CreateOrderPage() {
+function CreateInventoryPage() {
   const auth = authStore.getAuth();
 
   return (
     <Container>
-      <div>Create Order Page</div>
+      <div>Create Inventory Page</div>
     </Container>
   );
 }
 
-export default observer(WithPrimaryLayout(CreateOrderPage));
+export default observer(WithPrimaryLayout(CreateInventoryPage));

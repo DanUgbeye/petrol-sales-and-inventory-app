@@ -156,10 +156,10 @@ function RegisterEmployeePage() {
 
         <div className=" my-12 ">
           <Link
-            href={"/"}
+            href={"/employee"}
             className=" text-white underline-offset-4 hover:underline "
           >
-            Back to home
+            Back 
           </Link>
         </div>
       </Container>
