@@ -36,13 +36,9 @@ export const UserContextProvider = observer(
       if (!auth) return;
 
       try {
-        console.log("fetching");
         const res = await userApi.getProfile(auth.role);
         userStore.setUser(res);
-      } catch (error: any) {
-        console.log(apiService.getToken());
-        console.log(error);
-      }
+      } catch (error: any) {}
     }
 
     React.useEffect(() => {

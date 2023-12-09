@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "db": "node ./src/server/db/setup/index.ts",
-    "tsc": "tsc ./src/server/db/setup/index.ts --outDir ./src/server/db/setup/dist && node ./src/server/db/setup/dist/db/setup && rm -rf ./src/server/db/setup/dist",
     "dev": "next dev",
     "typecheck": "tsc --noEmit",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
@@ -46,3 +44,4 @@
     "prettier-plugin-tailwindcss": "^0.5.6"
   }
 }
+
