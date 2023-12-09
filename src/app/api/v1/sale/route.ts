@@ -1,5 +1,4 @@
-import { NewSale } from "@/global-types/order.types";
-import { Sale } from "@/global-types/sale.types";
+import { NewSale } from "@/global-types/sale.types";
 import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
 import { BadRequestException, ServerException } from "@/server/exceptions";
@@ -15,6 +14,8 @@ import { NextRequest } from "next/server";
  */
 async function getAllSales(req: NextRequest) {
   try {
+    const userAuth = AuthHelpers.authenticateUser(req);
+
     const conn = await connectDB();
     if (!conn) {
       return ServerResponse.error(new ServerException());
@@ -49,9 +50,7 @@ async function recordSale(req: NextRequest) {
     }
 
     const inventoryRepo = new InventoryRepository(conn);
-    const inventory = await inventoryRepo.getInventoryByType(
-      saleData.type
-    );
+    const inventory = await inventoryRepo.getInventoryByType(saleData.type);
 
     if (inventory.quantity < saleData.quantity) {
       throw new BadRequestException("inventory too low");

@@ -8,14 +8,18 @@ export const ORDER_STATUS = {
 export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
 export interface Order {
+  _id: string;
   managerId: string;
   type: InventoryType;
   quantity: number;
   pricePerLitre: number;
   status: OrderStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export type NewSale = {
+export type NewOrder = {
   type: InventoryType;
   quantity: number;
+  pricePerLitre: number;
 };

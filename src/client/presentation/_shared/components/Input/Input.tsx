@@ -19,7 +19,10 @@ export default function Input(props: InputProps) {
   return (
     <div className=" flex w-full flex-col ">
       {label && (
-        <label htmlFor={restProps.id} className=" mb-1 min-w-fit text-left text-black ">
+        <label
+          htmlFor={restProps.id}
+          className=" mb-1 min-w-fit text-left text-black "
+        >
           {label}
         </label>
       )}
@@ -28,7 +31,7 @@ export default function Input(props: InputProps) {
         <input
           {...restProps}
           className={twMerge(
-            ` flex h-12 w-full items-center rounded-lg border text-black border-gray-400 px-3 outline-0 focus-visible:border-2 focus-visible:border-blue-700 focus-visible:ring-0 disabled:bg-gray-100 disabled:text-gray-400 `,
+            ` flex h-12 w-full items-center rounded-lg border border-gray-400 px-3 text-black outline-0 focus-visible:border-2 focus-visible:border-blue-700 focus-visible:ring-0 disabled:bg-gray-100 disabled:text-gray-400 `,
             touched && error ? " border-2 border-red-400 " : " ",
             restProps.className || ""
           )}

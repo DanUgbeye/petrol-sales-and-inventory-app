@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 import useUser from "../../features/user/hooks/useUser.hook";
-import useAuth from "../../features/user/hooks/useAuth.hook";
+import useAuth from "../../features/auth/hooks/useAuth.hook";
 import useExecuteOnce from "@/client/presentation/_shared/hooks/useExecuteOnce.hook";
 import Spinner from "@/client/presentation/_shared/components/Spinner";
 import { toast } from "react-toastify";
@@ -36,7 +36,7 @@ function ProtectedRoute(props: ProtectedRouteProps) {
           toast.info("LOGIN TO CONTINUE");
           router.replace("/");
         });
-      } else {
+      } else if (auth && user) {
         setIsAuthenticated(true);
       }
     }
@@ -46,13 +46,13 @@ function ProtectedRoute(props: ProtectedRouteProps) {
   React.useEffect(() => {
     reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
 
-  return !userLoading && !authLoading && isAuthenticated ? (
+  return isAuthenticated ? (
     <>{props.children}</>
   ) : (
     <Container className=" grid h-[70vh] w-full place-items-center ">
-      <Spinner className=" aspect-square h-6 w-6 text-violet-800 " />
+      <Spinner className=" aspect-square h-6 w-6 text-white " />
     </Container>
   );
 }

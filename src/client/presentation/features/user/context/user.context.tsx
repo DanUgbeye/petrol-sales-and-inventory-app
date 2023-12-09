@@ -1,12 +1,11 @@
 "use client";
 import React, { PropsWithChildren } from "react";
-import { useRouter } from "next/navigation";
 import { User } from "@/global-types/user.types";
 import { UserAPIService } from "@/client/modules/user/api";
 import apiService from "@/client/modules/api/api";
 import { UserStorage } from "@/client/modules/user/storage";
 import { LocalStorage } from "@/client/global-utils/persistent-storage";
-import useAuth from "../hooks/useAuth.hook";
+import useAuth from "../../auth/hooks/useAuth.hook";
 import userStore from "@/client/modules/user/store/user.store";
 import authStore from "@/client/modules/auth/store/auth.store";
 import { observer } from "mobx-react";
@@ -32,15 +31,9 @@ export const UserContextProvider = observer(
     const userApi = new UserAPIService(apiService);
     const auth = authStore.getAuth();
 
-    function initializeUser() {
-      setLoading(true);
-      userStore.setUser(userStorage.get());
-      setLoading(false);
-    }
-
     /** fetch user data from API */
     async function fetchUser() {
-      if (!auth || authLoading) return;
+      if (!auth) return;
 
       try {
         console.log("fetching");
@@ -53,12 +46,14 @@ export const UserContextProvider = observer(
     }
 
     React.useEffect(() => {
-      initializeUser();
+      setLoading(false);
       fetchUser();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
       userStorage.save(user);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     /* delete any saved user info once auth details is not available */

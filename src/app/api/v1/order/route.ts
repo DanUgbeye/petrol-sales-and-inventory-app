@@ -3,6 +3,7 @@ import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
 import { ServerException } from "@/server/exceptions";
 import AuthHelpers from "@/server/modules/auth/auth.helpers";
+import InventoryRepository from "@/server/modules/inventory/inventory.repository";
 import OrderRepository from "@/server/modules/order/order.repository";
 import ServerResponse from "@/server/utils/response";
 import { NextRequest } from "next/server";
@@ -42,6 +43,10 @@ async function createOrder(req: NextRequest) {
     if (!conn) {
       return ServerResponse.error(new ServerException());
     }
+
+    const inventoryRepo = new InventoryRepository(conn);
+    // check if inventory exists
+    await inventoryRepo.getInventoryByType(orderData.type);
 
     const orderRepo = new OrderRepository(conn);
     const orders = await orderRepo.createOrder({

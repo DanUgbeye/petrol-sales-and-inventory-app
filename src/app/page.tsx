@@ -19,14 +19,13 @@ export default function HomePage() {
             >
               MANAGER LOGIN
             </Link>
-            
+
             <Link
               href={"/auth/employee-login"}
               className=" grid h-12 place-items-center rounded-lg border border-black bg-blue-600 font-bold transition-all duration-300 hover:bg-blue-800 "
             >
               EMPLOYEE LOGIN
             </Link>
-
           </div>
         </div>
       </Container>

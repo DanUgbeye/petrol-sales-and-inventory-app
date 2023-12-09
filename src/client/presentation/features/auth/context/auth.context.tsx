@@ -1,8 +1,6 @@
 "use client";
 import React, { PropsWithChildren } from "react";
-import { toast } from "react-toastify";
 import { observer } from "mobx-react";
-import apiService from "@/client/modules/api/api";
 import { AuthStorage } from "@/client/modules/user/storage";
 import { LocalStorage } from "@/client/global-utils/persistent-storage";
 import { AuthData } from "@/global-types/auth.types";
@@ -28,13 +26,9 @@ export const AuthContextProvider = observer(
     const [authLoading, setAuthLoading] = React.useState(true);
 
     React.useEffect(() => {
-      setAuthLoading(true);
-      authStore.setAuth(authStorage.get());
       setAuthLoading(false);
-    }, []);
-
-    React.useEffect(() => {
       authStorage.save(auth);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth]);
 
     return (

@@ -38,6 +38,8 @@ function ManagerLoginPage() {
     authStore.setAuth(res.auth);
     userStore.setUser(res.user);
 
+    apiService.setToken(res.auth.token);
+
     const localStorage = new LocalStorage();
 
     const userStorage = new UserStorage(localStorage);

@@ -10,7 +10,7 @@ function PrimaryLayout(props: PrimaryLayoutProps) {
   const { children, className } = props;
 
   return (
-    <div className={twMerge(" min-h-[100vh] h-full w-full ", className || "")}>
+    <div className={twMerge(" h-full min-h-[100vh] w-full ", className || "")}>
       <Navbar />
 
       {children}

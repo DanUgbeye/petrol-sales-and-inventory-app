@@ -1,5 +1,7 @@
+import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
 import { BadRequestException, ServerException } from "@/server/exceptions";
+import AuthHelpers from "@/server/modules/auth/auth.helpers";
 import InventoryRepository from "@/server/modules/inventory/inventory.repository";
 import SaleRepository from "@/server/modules/sale/sale.repository";
 import ServerResponse from "@/server/utils/response";
@@ -14,6 +16,8 @@ type RouteContext = { params: RouteParams };
  */
 async function getSaleById(req: NextRequest, context: RouteContext) {
   try {
+    const userAuth = AuthHelpers.authenticateUser(req);
+
     const conn = await connectDB();
     if (!conn) {
       return ServerResponse.error(new ServerException());
@@ -34,6 +38,8 @@ async function getSaleById(req: NextRequest, context: RouteContext) {
  */
 async function updateSale(req: NextRequest, context: RouteContext) {
   try {
+    const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.EMPLOYEE]);
+
     const saleId = context.params.id;
     const saleData = await req.json();
     // validations
@@ -88,6 +94,8 @@ async function updateSale(req: NextRequest, context: RouteContext) {
  */
 async function deleteSale(req: NextRequest, context: RouteContext) {
   try {
+    const userAuth = AuthHelpers.authenticateUser(req, [USER_ROLES.EMPLOYEE]);
+
     const saleId = context.params.id;
 
     const conn = await connectDB();

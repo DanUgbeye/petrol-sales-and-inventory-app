@@ -39,7 +39,7 @@ export default function useInputController(props: InputProps) {
       },
       ...restProps,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props, showPw]);
 
   return {

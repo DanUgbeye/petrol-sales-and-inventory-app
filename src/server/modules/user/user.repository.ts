@@ -75,7 +75,9 @@ export default class UserRepository {
     let users: UserDocument[];
 
     try {
-      users = await this.collection.find({ role: USER_ROLES.EMPLOYEE });
+      users = await this.collection
+        .find({ role: USER_ROLES.EMPLOYEE })
+        .sort({ createdAt: -1 });
     } catch (error: any) {
       throw new ServerException(error.message);
     }

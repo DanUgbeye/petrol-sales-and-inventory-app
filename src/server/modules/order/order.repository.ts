@@ -45,7 +45,7 @@ export default class OrderRepository {
     let order: OrderDocument[];
 
     try {
-      order = await this.collection.find();
+      order = await this.collection.find().sort({ createdAt: -1 });
     } catch (error: any) {
       throw new ServerException(error.message);
     }
@@ -55,13 +55,13 @@ export default class OrderRepository {
 
   /**
    * creates a new order
-   * @param NewSale order data
+   * @param newOrder order data
    */
-  async createOrder(NewSale: Partial<Order>) {
+  async createOrder(newOrder: Partial<Order>) {
     let order: OrderDocument;
 
     try {
-      order = await this.collection.create(NewSale);
+      order = await this.collection.create(newOrder);
     } catch (error: any) {
       throw new ServerException(error.message);
     }
@@ -123,7 +123,7 @@ export default class OrderRepository {
     }
 
     try {
-      await order.deleteOne()
+      await order.deleteOne();
       // order = await this.collection.findByIdAnd(id);
     } catch (error: any) {
       throw new ServerException(error.message);

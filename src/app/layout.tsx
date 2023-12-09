@@ -12,10 +12,8 @@ import userStore from "@/client/modules/user/store/user.store";
 // CSS FILES
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import {
-  AuthContextProvider,
-  UserContextProvider,
-} from "@/client/presentation/features/user/context";
+import { UserContextProvider } from "@/client/presentation/features/user/context";
+import { AuthContextProvider } from "@/client/presentation/features/auth/context";
 
 function initialize() {
   const userStorage = new UserStorage(new LocalStorage());
@@ -60,7 +58,7 @@ export default function RootLayout(props: RootLayoutProps) {
         />
       </Head>
 
-      <body className={" bg-black/40 "}>
+      <body className={" min-h-screen bg-black/40 "}>
         <QueryClientProvider client={queryClient}>
           <AuthContextProvider>
             <UserContextProvider>

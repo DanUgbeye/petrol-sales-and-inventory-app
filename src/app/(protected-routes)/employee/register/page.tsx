@@ -8,18 +8,17 @@ import { Formik } from "formik";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import useAuth from "@/client/presentation/features/user/hooks/useAuth.hook";
+import useAuth from "@/client/presentation/features/auth/hooks/useAuth.hook";
 import useUser from "@/client/presentation/features/user/hooks/useUser.hook";
 import { observer } from "mobx-react";
 import WithPrimaryLayout from "@/client/presentation/layouts/primary-layout/WithPrimaryLayout";
-import { AuthAPIService } from "@/client/modules/auth/api";
+import { UserAPIService } from "@/client/modules/user/api";
 import apiService from "@/client/modules/api/api";
 import { NewEmployeeData } from "@/global-types/user.types";
 
 function RegisterEmployeePage() {
   const router = useRouter();
   const { auth } = useAuth();
-  const {} = useUser();
 
   const initialValues: NewEmployeeData = {
     name: "",
@@ -30,14 +29,16 @@ function RegisterEmployeePage() {
   };
 
   async function handleSubmit(values: NewEmployeeData) {
-    const authService = new AuthAPIService(apiService);
+    const userService = new UserAPIService(apiService);
 
     try {
-      const res = await authService.register(values);
-      toast.success("employee added successfully");
+      const res = await userService.register(values);
     } catch (error: any) {
       toast.error(error.message);
     }
+
+    toast.success("employee added successfully");
+    router.replace("/employee");
   }
 
   return (
@@ -159,7 +160,7 @@ function RegisterEmployeePage() {
             href={"/employee"}
             className=" text-white underline-offset-4 hover:underline "
           >
-            Back 
+            Back
           </Link>
         </div>
       </Container>

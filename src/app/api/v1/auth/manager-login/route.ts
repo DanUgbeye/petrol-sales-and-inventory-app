@@ -6,7 +6,7 @@ import ServerResponse from "@/server/utils/response";
 import { TokenUtil } from "@/server/utils/token";
 
 /**
- * logs in an employee 
+ * logs in an employee
  * @route GET - .../v1/auth/manager-login
  */
 async function ManagerLogin(req: Request) {

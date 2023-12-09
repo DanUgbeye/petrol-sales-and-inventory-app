@@ -6,7 +6,7 @@ import { TokenUtil } from "@/server/utils/token";
 import { USER_ROLES, UserLoginData } from "@/global-types/user.types";
 
 /**
- * logs in an employee 
+ * logs in an employee
  * @route GET - .../v1/auth/employee-login
  */
 async function EmployeeLogin(req: Request) {

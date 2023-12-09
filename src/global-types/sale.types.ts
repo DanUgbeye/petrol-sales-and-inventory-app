@@ -1,6 +1,7 @@
 import { InventoryType } from "./inventory.types";
 
 export interface Sale {
+  _id: string;
   employeeId: string;
   inventoryId: string;
   inventoryType: InventoryType;
@@ -18,4 +19,9 @@ export type SaleStat = {
 export type AppSalesStat = {
   total: SaleStat;
   month: SaleStat;
+};
+
+export type NewSale = {
+  type: InventoryType;
+  quantity: number;
 };

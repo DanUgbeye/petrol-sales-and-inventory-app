@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor() {
     if (ApiService.instance) {
-      throw new Error("ApiService Instance already exists");
+      throw new Error("Instance already exists");
     }
 
     const { API_BASE_URL } = APP_CONFIG;
@@ -30,7 +30,7 @@ export class ApiService {
 
   setToken(token: string) {
     this.token = token;
-    this.axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    this.axios.defaults.headers.common["authorization"] = "Bearer " + token;
   }
 
   getToken() {

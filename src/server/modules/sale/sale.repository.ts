@@ -19,7 +19,9 @@ export default class SaleRepository {
     let sale: SaleDocument | null = null;
 
     try {
-      sale = await this.collection.findById(id);
+      sale = await this.collection
+        .findById(id)
+        .populate("employeeId", "-password");
     } catch (err: any) {
       throw new ServerException(err.message);
     }
@@ -40,7 +42,7 @@ export default class SaleRepository {
     let sale: SaleDocument[];
 
     try {
-      sale = await this.collection.find();
+      sale = await this.collection.find().sort({ createdAt: -1 });
     } catch (error: any) {
       throw new ServerException(error.message);
     }

@@ -6,19 +6,21 @@ import { USER_ROLES } from "@/global-types/user.types";
 import authStore from "@/client/modules/auth/store/auth.store";
 import { observer } from "mobx-react";
 import userStore from "@/client/modules/user/store/user.store";
+import { AuthStorage, UserStorage } from "@/client/modules/user/storage";
+import { LocalStorage } from "@/client/global-utils/persistent-storage";
 
 function Navbar() {
-  const auth = authStore.getAuth()
   const user = userStore.getUser();
 
   function handleLogout() {
     authStore.setAuth(null);
+    userStore.setUser(null);
   }
 
   return (
-    <nav className=" flex h-28 items-center text-white ">
+    <nav className=" flex h-[10rem] items-center text-white ">
       <Container className=" h-fit ">
-        <div className=" flex h-16 justify-end gap-x-12 gap-y-4 rounded-xl bg-white/20 px-3 backdrop-blur-md sm:flex-row sm:px-8 ">
+        <div className=" flex h-[5rem] justify-end gap-x-12 gap-y-4 rounded-xl bg-white/20 px-3 text-lg backdrop-blur-md sm:flex-row sm:px-8 ">
           {user && (
             <div className=" mx-auto flex w-fit items-center gap-x-7 sm:mx-0 ">
               <NavLink href={"/dashboard"} className=" ">
