@@ -60,7 +60,6 @@ export class ApiService {
       errMessage = "SOMETHING WENT WRONG ON THE SERVER";
     }
 
-    // console.log(errMessage);
     return new Error(errMessage as string);
   }
 
