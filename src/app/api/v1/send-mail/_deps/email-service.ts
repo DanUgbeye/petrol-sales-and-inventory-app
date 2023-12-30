@@ -1,11 +1,12 @@
+import { SERVER_CONFIG } from "@/server/config/server.config";
 import { ServerException } from "@/server/exceptions";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "your-email@gmail.com",
-    pass: "your-email-password",
+    user: SERVER_CONFIG.EMAIL_SERVICE_EMAIL,
+    pass: SERVER_CONFIG.EMAIL_SERVICE_PASSWORD,
   },
 });
 

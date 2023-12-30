@@ -9,7 +9,7 @@ async function handleSendEmail(req: NextRequest) {
     await sendEmail(emailData);
     return ServerResponse.success("Email sent", 200);
   } catch (error: any) {
-    return ServerResponse.success(error);
+    return ServerResponse.error(error);
   }
 }
 
