@@ -1,9 +1,8 @@
 import { INVENTORY_TYPE } from "@/global-types/inventory.types";
 import { USER_ROLES } from "@/global-types/user.types";
 import connectDB from "@/server/db/connect";
-import {
+import Exception, {
   BadRequestException,
-  BaseException,
   ServerException,
 } from "@/server/exceptions";
 import AuthHelpers from "@/server/modules/auth/auth.helpers";

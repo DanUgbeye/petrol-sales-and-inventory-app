@@ -1,13 +1,11 @@
 import {
   AuthenticationException,
   AuthorizationException,
-  ServerException,
 } from "@/server/exceptions";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { UserDocument } from "../user/user.types";
 import { TokenUtil } from "@/server/utils/token";
-import { USER_ROLES, UserRole } from "@/global-types/user.types";
-import { headers } from "next/headers";
+import { UserRole } from "@/global-types/user.types";
 
 export default class AuthHelpers {
   /**
@@ -37,7 +35,7 @@ export default class AuthHelpers {
   }
 
   /** gets user payload from token
-   * @throws {BaseException}
+   * @throws {Exception}
    */
   static authenticateUser(req: NextRequest, role?: UserRole[]) {
     const authToken = AuthHelpers.extractAuthToken(req);

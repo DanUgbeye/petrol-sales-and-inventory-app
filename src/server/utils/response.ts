@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { BaseException } from "../exceptions";
+import Exception from "../exceptions";
 
 export default class ServerResponse {
   static success(message: string): any;
@@ -45,36 +45,34 @@ export default class ServerResponse {
     );
   }
 
-  static error(error: BaseException): any;
+  static error(error: Exception): any;
   static error(error: Error): any;
   static error(message: string, code: number): any;
   static error(...args: any[]): any {
-    let errorObject: BaseException;
+    let errorObject: Exception;
 
     switch (args.length) {
       case 1: {
-        if (args[0] instanceof BaseException) {
+        if (args[0] instanceof Exception) {
           errorObject = args[0];
         } else {
           let err: Error = args[0];
-          errorObject = new BaseException(err.message);
+          errorObject = new Exception(err.message);
         }
         break;
       }
 
       default: {
-        errorObject = new BaseException(args[0], args[1]);
+        errorObject = new Exception(args[0], args[1]);
       }
     }
 
     return NextResponse.json(
       {
         success: false,
-        ...errorObject.getObject(),
+        ...errorObject.toObject(),
       },
-      {
-        status: errorObject.getCode(),
-      }
+      { status: errorObject.getCode() }
     );
   }
 }
